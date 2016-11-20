@@ -12,11 +12,10 @@ import static org.junit.Assert.*;
  */
 public class GameTest {
 
+    private final Game game = new Game();
+
     @org.junit.Test
     public void checkTest(){
-
-        Game game = new Game();
-
         for (Color color : Color.values()) {
             assertTrue(game.check(color, color));
         }
@@ -26,36 +25,32 @@ public class GameTest {
 
     @org.junit.Test
     public void checkIfEndTest(){
-
-        Game game = new Game();
-
-        boolean[] trueResult = new boolean[]{true, true, true, true};
-        boolean[] falseResult = new boolean[]{true, false, true, false};
-
-        assertTrue(game.checkIfEnd(trueResult));
-        assertFalse(game.checkIfEnd(falseResult));
-    }
-
-    @org.junit.Test
-    public void checkCodeSetup(){
-
-        Game game = new Game();
-
-        Color[] arr = game.setupCode(4);
-
-        assertEquals(Color.RED, arr[0]);
-        assertEquals(Color.BLACK, arr[1]);
+        assertTrue(game.checkIfEnd(new int[]{4, 0}));
+        assertFalse(game.checkIfEnd(new int[]{0, 0}));
     }
 
     @org.junit.Test
     public void evaluateGuessTest(){
+        //  TEST 1
+        Color[] test1Code = new Color[]{Color.RED, Color.RED, Color.RED, Color.RED};
+        Color[] test1Guess = new Color[]{Color.RED, Color.RED, Color.RED, Color.RED};
 
-        Game game = new Game();
+        //  TEST 2
+        Color[] test2Code = new Color[]{Color.RED, Color.BLACK, Color.YELLOW, Color.BLUE};
+        Color[] test2Guess = new Color[]{Color.RED, Color.BLACK, Color.YELLOW, Color.BLUE};
 
-        Color[] code = game.setupCode(4);
-        Color[] guess = new Color[]{Color.RED, Color.BLACK, Color.YELLOW, Color.BLUE};
+        //  TEST 3
+        Color[] test3Code = new Color[]{Color.BROWN, Color.WHITE, Color.BLUE, Color.YELLOW};
+        Color[] test3Guess = new Color[]{Color.RED, Color.BLACK, Color.YELLOW, Color.BLUE};
 
-        assertArrayEquals(new boolean[]{true, true, false, true}, game.evaluateGuess(guess, code));
+        //  TEST 4
+        Color[] test4Code = new Color[]{Color.RED, Color.WHITE, Color.BLUE, Color.YELLOW};
+        Color[] test4Guess = new Color[]{Color.RED, Color.BLACK, Color.YELLOW, Color.BLUE};
+
+        assertArrayEquals(new int[]{4, 0}, game.evaluateGuess(test1Guess, test1Code));
+        assertArrayEquals(new int[]{4, 0}, game.evaluateGuess(test2Guess, test2Code));
+        assertArrayEquals(new int[]{0, 2}, game.evaluateGuess(test3Guess, test3Code));
+        assertArrayEquals(new int[]{1, 2}, game.evaluateGuess(test4Guess, test4Code));
     }
 
 
