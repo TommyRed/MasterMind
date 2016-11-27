@@ -32,8 +32,8 @@ public class GameTest {
     @org.junit.Test
     public void evaluateGuessTest(){
         //  TEST 1
-        Color[] test1Code = new Color[]{Color.RED, Color.RED, Color.RED, Color.RED};
-        Color[] test1Guess = new Color[]{Color.RED, Color.RED, Color.RED, Color.RED};
+        Color[] test1Code = new Color[]{Color.YELLOW, Color.GREEN, Color.ORANGE, Color.BLUE};
+        Color[] test1Guess = new Color[]{Color.BLUE, Color.GREEN, Color.BLUE, Color.ORANGE};
 
         //  TEST 2
         Color[] test2Code = new Color[]{Color.RED, Color.BLACK, Color.YELLOW, Color.BLUE};
@@ -47,7 +47,7 @@ public class GameTest {
         Color[] test4Code = new Color[]{Color.RED, Color.WHITE, Color.BLUE, Color.YELLOW};
         Color[] test4Guess = new Color[]{Color.RED, Color.BLACK, Color.YELLOW, Color.BLUE};
 
-        assertArrayEquals(new int[]{4, 0}, game.evaluateGuess(test1Guess, test1Code));
+        assertArrayEquals(new int[]{1, 2}, game.evaluateGuess(test1Guess, test1Code));
         assertArrayEquals(new int[]{4, 0}, game.evaluateGuess(test2Guess, test2Code));
         assertArrayEquals(new int[]{0, 2}, game.evaluateGuess(test3Guess, test3Code));
         assertArrayEquals(new int[]{1, 2}, game.evaluateGuess(test4Guess, test4Code));

@@ -1,5 +1,7 @@
 package mastermind;
 
+import mastermind.Ai.Ai;
+import mastermind.domain.Result;
 import mastermind.types.Color;
 
 import java.util.ArrayList;
@@ -12,17 +14,20 @@ import java.util.Scanner;
 public class Game {
 
     public void startGame(){
+        startGame(null);
+    }
 
-        //Possibility -> Dynamic choosing
-        int size = 4, numberOfRounds = 8;
+    public void startGame(Ai ai){
 
-        boolean result = play(new ArrayList<>(), setupCode(size), 1, numberOfRounds);
+        boolean result = (ai == null)
+                ? play(new ArrayList<>(), setupCode(4), 1, 8)
+                : play(new ArrayList<>(), setupCode(4), 1, 8000, ai);
 
         if (result) print("You won");
         else print("You lost");
     }
 
-    public boolean play(List<Color[]> prevGuess, Color[] code, final int round, final int numberOfRounds) {
+    private boolean play(List<Color[]> prevGuess, Color[] code, final int round, final int numberOfRounds) {
 
         print("Round " + round);
 
@@ -30,13 +35,31 @@ public class Game {
 
         prevGuess.add(guess);
 
-        int[] evalGuess = evaluateGuess(guess, code);
+        int[] result = evaluateGuess(guess, code);
 
-        print("Place and Color guessed : " + evalGuess[0] + "\n Color but not place guessed : " +  evalGuess[1]);
+        print("Place and Color guessed : " + result[0] + "\n Color but not place guessed : " +  result[1]);
 
-        if (checkIfEnd(evalGuess)) return true;
+        if (checkIfEnd(result)) return true;
         else if (round <= numberOfRounds)
             play(prevGuess, code, round + 1, numberOfRounds);
+        return false;
+    }
+
+    private boolean play(List<Color[]> prevGuess, Color[] code, final int round, final int numberOfRounds, Ai ai) {
+
+        print("\nRound " + round);
+
+        Color[] guess = ai.makeGuess(new Color[code.length]);
+
+        int[] result = evaluateGuess(guess, code);
+
+        ai.addPrevGuess(new Result(guess, result));
+
+        print("    Place and Color guessed : " + result[0] + "\n    Color but not place guessed : " +  result[1]);
+
+        if (checkIfEnd(result)) return true;
+        else if (round < numberOfRounds)
+            play(prevGuess, code, round + 1, numberOfRounds, ai);
         return false;
     }
 
